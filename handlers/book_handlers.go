@@ -5,6 +5,16 @@ import "library/services"
 type BookHandler struct {
 	Service *services.BookService
 }
+func (h *BookHandler) FindByGenre(w http.ResponseWriter, r *http.Request){
+genre := r.URL.Query(.Get("genre")
+
+books, err := h.service.FindByGenre(genre)
+if err != nil{
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return 
+}
+json.NewEncoder(w).Encode(books)
+}
 
 /*
 Group 1
