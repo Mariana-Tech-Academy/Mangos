@@ -17,8 +17,8 @@ func main() {
 	db := database.OpenDb()
 
 	/* initialise repositories */
-	userRepo := &repository.UserRepo{}
-	bookRepo := &repository.BookRepo{}
+	userRepo := &repository.UserRepo{db}
+	bookRepo := &repository.BookRepo{db}
 
 	/* initialise service */
 	userService := &services.UserService{Repo: userRepo}
