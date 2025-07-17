@@ -10,10 +10,9 @@ import (
 type BookRepository interface {
 	GetBooksByUser(id string) (*[]models.Book, error)
 	GetBookByID(id string) (*models.Book, error)
-	UpdateBook(update *models.Book) error
+	UpdateBook(book *models.Book) error
 	CreateBook(book *models.Book) error
     DeleteBook(id uuid.UUID) error
-	UpdateBookStock(update *models.Book) error
 }
 
 type BookRepo struct {
@@ -24,7 +23,8 @@ func (r *BookRepo) CreateBook(book *models.Book) error {
 }
 
 func (r *BookRepo) UpdateBook(book *models.Book) error {
-    return database.Db.Model(&models.Book{}).Where("id = ?", book.ID).Updates(book).Error
+    err := database.Db.Save(book).Error
+	return err
 }
 
 func (r *BookRepo) DeleteBook(id uuid.UUID) error {
@@ -41,10 +41,5 @@ func (r *BookRepo) GetBookByID(id string) (*models.Book, error) {
 	var book models.Book
 	err := database.Db.Where("ID = ?", id).First(&book).Error
 	return &book, err
-}
-
-func (r *BookRepo) UpdateBookStock(update *models.Book) error {
-	err := database.Db.Save(update).Error
-	return err
 }
 
