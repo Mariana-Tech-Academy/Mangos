@@ -12,23 +12,31 @@ type BookRepository interface {
 	GetBookByID(id string) (*models.Book, error)
 	UpdateBook(update *models.Book) error
 	CreateBook(book *models.Book) error
-    DeleteBook(id uuid.UUID) error
+	DeleteBook(id uuid.UUID) error
 	UpdateBookStock(update *models.Book) error
+}
+
+func (b BookRepository) FindByYear(pattern string) (any, any) {
+	panic("unimplemented")
+}
+
+func (b BookRepository) FindByAuthor(pattern string) (any, any) {
+	panic("unimplemented")
 }
 
 type BookRepo struct {
 }
 
 func (r *BookRepo) CreateBook(book *models.Book) error {
-    return database.Db.Create(book).Error
+	return database.Db.Create(book).Error
 }
 
 func (r *BookRepo) UpdateBook(book *models.Book) error {
-    return database.Db.Model(&models.Book{}).Where("id = ?", book.ID).Updates(book).Error
+	return database.Db.Model(&models.Book{}).Where("id = ?", book.ID).Updates(book).Error
 }
 
 func (r *BookRepo) DeleteBook(id uuid.UUID) error {
-    return database.Db.Delete(&models.Book{}, id).Error
+	return database.Db.Delete(&models.Book{}, id).Error
 }
 
 func (r *BookRepo) GetBooksByUser(id string) (*[]models.Book, error) {
@@ -83,4 +91,3 @@ func (r *BookRepo) FindByYear(pattern string) ([]models.Book, error) {
 	}
 	return books, nil
 }
-
